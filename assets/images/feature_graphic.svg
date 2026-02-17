@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 500">
+  <!-- Dark background -->
+  <rect width="1024" height="500" fill="#121212"/>
+  
+  <!-- Decorative circles -->
+  <circle cx="100" cy="100" r="150" fill="#1A1A1A" fill-opacity="0.5"/>
+  <circle cx="924" cy="400" r="200" fill="#1A1A1A" fill-opacity="0.3"/>
+  
+  <!-- Centered GT Logo -->
+  <circle cx="512" cy="220" r="120" fill="#1A1A1A"/>
+  
+  <!-- Gold G letter -->
+  <path
+      fill="#FFD700"
+      d="M580,165
+          L430,165
+          L400,195
+          L400,255
+          L430,285
+          L530,285
+          L560,255
+          L560,225
+          L490,225
+          L490,240
+          L530,240
+          L530,255
+          L515,275
+          L445,275
+          L430,255
+          L430,225
+          L430,195
+          L580,195 Z"/>
+  
+  <!-- Cyan accent top right -->
+  <path
+      fill="#00E5FF"
+      d="M565,165 L585,165 L585,195 L565,182 Z"/>
+  
+  <!-- Cyan accent bottom -->
+  <path
+      fill="#00E5FF"
+      d="M445,295 L545,295 L555,315 L435,315 Z"/>
+  
+  <!-- App Name -->
+  <text x="512" y="390" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#FFD700" text-anchor="middle" letter-spacing="2">GOVIND TANK</text>
+  <text x="512" y="420" font-family="Arial, sans-serif" font-size="20" fill="#00E5FF" text-anchor="middle" letter-spacing="4">PORTFOLIO</text>
+</svg>

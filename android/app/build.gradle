@@ -1,0 +1,132 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+def keystoreExists = keystorePropertiesFile.exists()
+if (keystoreExists) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace "com.govindtank.portfolio"
+    compileSdkVersion 36
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    defaultConfig {
+        applicationId "com.govindtank.portfolio"
+        minSdkVersion 23
+        targetSdkVersion 36
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Enable R8 full mode for better code shrinking and obfuscation
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        
+        // Enable vector drawable support
+        vectorDrawables.useSupportLibrary = true
+        
+        // 16KB page compatibility
+        // Setting this ensures compatibility with devices that use 16KB page sizes
+        is16KbPageSizeCompatible = true
+    }
+
+    signingConfigs {
+        release {
+            if (keystoreExists) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            debuggable true
+            minifyEnabled false
+        }
+        
+        profile {
+            applicationIdSuffix ".profile"
+            versionNameSuffix "-profile"
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        
+        release {
+            // Enable code shrinking, obfuscation, and optimization
+            shrinkResources true
+            minifyEnabled true
+            
+            // Use the release signing config if keystore exists, otherwise use debug
+            signingConfig keystoreExists ? signingConfigs.release : signingConfigs.debug
+            
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            
+            // Enable resource shrinking
+            crunchPngs true
+        }
+    }
+    
+    // Enable view binding
+    buildFeatures {
+        viewBinding true
+    }
+    
+    // Configure APK splits to reduce APK size
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
+            universalApk true
+        }
+    }
+    
+    // Configure APK version codes for each ABI
+    project.ext.versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
+    
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
+            def abi = output.getFilter(com.android.build.OutputFile.ABI)
+            if (abi != null) {
+                output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
+            }
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}

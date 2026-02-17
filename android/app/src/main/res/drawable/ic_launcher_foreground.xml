@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Hexagon background -->
+    <path
+        android:fillColor="#1A1A1A"
+        android:pathData="M54,12 L90,30 L90,78 L54,96 L18,78 L18,30 Z"/>
+    
+    <!-- Gold G letter -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M78,38
+                          L36,38
+                          L28,46
+                          L28,62
+                          L36,70
+                          L70,70
+                          L80,62
+                          L80,52
+                          L56,52
+                          L56,58
+                          L72,58
+                          L72,60
+                          L68,66
+                          L40,66
+                          L36,60
+                          L36,48
+                          L36,44
+                          L78,44 Z"/>
+    
+    <!-- Cyan accent top right -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M76,38 L82,38 L82,46 L76,42 Z"/>
+    
+    <!-- Cyan accent bottom -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M42,74 L66,74 L68,78 L40,78 Z"/>
+</vector>

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Dark background -->
+  <rect width="512" height="512" fill="#121212"/>
+  
+  <!-- Hexagon -->
+  <path
+      fill="#1A1A1A"
+      d="M256,48 L432,152 L432,360 L256,464 L80,360 L80,152 Z"/>
+  
+  <!-- Gold G letter -->
+  <path
+      fill="#FFD700"
+      d="M376,176
+        L168,176
+        L120,224
+        L120,296
+        L168,344
+        L328,344
+        L376,296
+        L376,248
+        L256,248
+        L256,272
+        L328,272
+        L328,288
+        L312,320
+        L184,320
+        L160,288
+        L160,232
+        L160,216
+        L376,216 Z"/>
+  
+  <!-- Cyan accent top right -->
+  <path
+      fill="#00E5FF"
+      d="M368,176 L400,176 L400,216 L368,200 Z"/>
+  
+  <!-- Cyan accent bottom -->
+  <path
+      fill="#00E5FF"
+      d="M192,360 L320,360 L336,384 L176,384 Z"/>
+</svg>

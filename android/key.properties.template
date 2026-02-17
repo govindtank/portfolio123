@@ -1,0 +1,27 @@
+# Keystore Configuration Template
+# IMPORTANT: Rename this file to key.properties and fill in your actual values
+
+# Replace with your keystore file path (relative to android directory)
+# Example: storeFile=release.jks
+storeFile=release.jks
+
+# Your keystore password
+storePassword=YOUR_STORE_PASSWORD
+
+# Your key alias
+keyAlias=YOUR_KEY_ALIAS
+
+# Your key password
+keyPassword=YOUR_KEY_PASSWORD
+
+# ============================================
+# INSTRUCTIONS:
+# 1. Generate a keystore using:
+#    keytool -genkey -v -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -keystore release.jks -alias portfolio
+#
+# 2. Move the keystore to android/ directory
+#
+# 3. Rename this template to key.properties
+#
+# 4. Update the values above with your keystore details
+# ============================================

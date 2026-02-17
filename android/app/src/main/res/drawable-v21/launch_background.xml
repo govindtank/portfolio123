@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Modify this file to customize your launch splash screen -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Dark background -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#121212"/>
+        </shape>
+    </item>
+    
+    <!-- Centered logo -->
+    <item
+        android:gravity="center">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/gt_logo"
+            android:width="200dp"
+            android:height="200dp"/>
+    </item>
+</layer-list>
