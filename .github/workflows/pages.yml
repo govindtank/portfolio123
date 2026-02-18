@@ -27,10 +27,13 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Create .nojekyll file
+        run: touch portfolio/.nojekyll
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './privacy_policy.html'
+          path: 'portfolio/'
 
       - name: Deploy to GitHub Pages
         id: deployment
