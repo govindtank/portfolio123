@@ -21,7 +21,7 @@ if (keystoreExists) {
 
 android {
     namespace "com.govindtank.portfolio"
-    compileSdkVersion 36
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -40,7 +40,7 @@ android {
     defaultConfig {
         applicationId "com.govindtank.portfolio"
         minSdkVersion 23
-        targetSdkVersion 36
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -51,10 +51,6 @@ android {
         
         // Enable vector drawable support
         vectorDrawables.useSupportLibrary = true
-        
-        // 16KB page compatibility
-        // Setting this ensures compatibility with devices that use 16KB page sizes
-        is16KbPageSizeCompatible = true
     }
 
     signingConfigs {

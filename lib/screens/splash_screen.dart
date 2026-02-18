@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'home_page.dart';
+import 'resume_screen.dart';
+import '../services/visitor_counter_service.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -10,13 +12,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final VisitorCounterService _visitorCounterService = VisitorCounterService();
+  
   @override
   void initState() {
     super.initState();
-    _navigateToHome();
+    _initializeAndNavigate();
   }
 
-  Future<void> _navigateToHome() async {
+  Future<void> _initializeAndNavigate() async {
+    // Increment visitor counter on app load
+    await _visitorCounterService.incrementVisitorCount();
+    
+    // Navigate to home after delay
     await Future.delayed(const Duration(milliseconds: 2500));
     if (mounted) {
       Navigator.of(context).pushReplacement(
@@ -117,6 +125,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 .animate()
                 .fadeIn(delay: 800.ms, duration: 400.ms),
           ],
+        ),
         ),
       ),
     );

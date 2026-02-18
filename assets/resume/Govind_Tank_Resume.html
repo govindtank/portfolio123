@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Govind Tank - Resume</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0.5in;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'TeX Gyre Termes', 'Times New Roman', Times, serif;
+            font-size: 10pt;
+            line-height: 1.4;
+            color: #333;
+            max-width: 210mm;
+            margin: 0 auto;
+            padding: 0.5in;
+            background: white;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            font-size: 24pt;
+            font-variant: small-caps;
+            font-weight: bold;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+        
+        .header .title {
+            font-size: 11pt;
+            margin-bottom: 5px;
+        }
+        
+        .header .contact-info {
+            font-size: 9pt;
+            color: #555;
+        }
+        
+        .header a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .header a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Section Headers */
+        section {
+            margin-bottom: 15px;
+        }
+        
+        h2 {
+            font-size: 12pt;
+            font-variant: small-caps;
+            font-weight: bold;
+            border-bottom: 1px solid #333;
+            padding-bottom: 3px;
+            margin-bottom: 10px;
+        }
+        
+        /* Summary */
+        .summary {
+            text-align: justify;
+        }
+        
+        .summary strong {
+            color: #000;
+        }
+        
+        /* Skills */
+        .skills-item {
+            margin-bottom: 5px;
+        }
+        
+        .skills-item .category {
+            font-weight: bold;
+        }
+        
+        /* Experience */
+        .experience-item {
+            margin-bottom: 12px;
+        }
+        
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 3px;
+        }
+        
+        .experience-header h3 {
+            font-size: 11pt;
+            font-weight: bold;
+        }
+        
+        .experience-header .duration {
+            font-size: 10pt;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .experience-company {
+            font-size: 10pt;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .experience-list {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        
+        .experience-list li {
+            margin-bottom: 3px;
+            text-align: justify;
+        }
+        
+        .experience-list li strong {
+            color: #000;
+        }
+        
+        /* Education */
+        .education-item {
+            margin-bottom: 10px;
+        }
+        
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .education-header h3 {
+            font-size: 11pt;
+            font-weight: bold;
+        }
+        
+        .education-header .duration {
+            font-size: 10pt;
+            font-style: italic;
+            color: #555;
+        }
+        
+        .education-institution {
+            font-size: 10pt;
+            font-style: italic;
+            color: #555;
+        }
+        
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none;
+            }
+        }
+        
+        /* Download Button */
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #6C63FF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn:hover {
+            background: #5a52d5;
+        }
+        
+        @media print {
+            .download-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="download-btn no-print" onclick="window.print()">Download as PDF</button>
+    
+    <!-- Header -->
+    <header class="header">
+        <h1>Govind Tank</h1>
+        <div class="title">Senior Mobile Application Developer (Kotlin | Flutter)</div>
+        <div class="contact-info">
+            Gandhinagar, Gujarat, India | +91 8460 48 4061 | <a href="mailto:govindtank600@gmail.com">govindtank600@gmail.com</a><br>
+            <a href="https://linkedin.com/in/govindtank">linkedin.com/in/govindtank</a> | 
+            <a href="https://github.com/govindtank">github.com/govindtank</a> | 
+            <a href="https://govindtank.github.io">govindtank.github.io</a>
+        </div>
+    </header>
+    
+    <!-- Professional Summary -->
+    <section>
+        <h2>Professional Summary</h2>
+        <p class="summary">
+            High-performance Senior Mobile Application Developer with 9+ years of experience architecting scalable Android (Kotlin/Java) and Cross-Platform (Flutter) solutions. Proven track record of delivering applications serving <strong>100,000+ active users</strong> with <strong>99.9% crash-free stability</strong>. Specialized in Clean Architecture, MVVM/Bloc patterns, and modern UI toolkits like Jetpack Compose. Forward-thinking advocate for <strong>AI-augmented development</strong>, leveraging coding agents like Cursor and Windsurf to accelerate delivery cycles and enhance code quality.
+        </p>
+    </section>
+    
+    <!-- Technical Skills -->
+    <section>
+        <h2>Technical Skills</h2>
+        <div class="skills-item">
+            <span class="category">Languages:</span> Kotlin, Java, Dart (Flutter), TypeScript, JavaScript (Node.js), SQL
+        </div>
+        <div class="skills-item">
+            <span class="category">Android Native:</span> SDK, Jetpack Compose, Coroutines, State Flow, LiveData, WorkManager, Android Auto, Material 3
+        </div>
+        <div class="skills-item">
+            <span class="category">Flutter Ecosystem:</span> Flutter Bloc, Provider, AutoRoute, Freezed, Method Channels, audio_service, Equatable
+        </div>
+        <div class="skills-item">
+            <span class="category">Architecture:</span> Clean Architecture, MVVM, MVI, Repository Pattern, Dependency Injection (Dagger Hilt, Koin)
+        </div>
+        <div class="skills-item">
+            <span class="category">Backend & Cloud:</span> Node.js, Express.js, Firebase (Auth, Firestore, FCM), AWS CloudFront, RESTful APIs, GraphQL
+        </div>
+        <div class="skills-item">
+            <span class="category">AI & Next-Gen Dev:</span> Cursor, Windsurf, Claude Code, OpenRouter API, Anti Gravity, Kilo Code, Open Claw
+        </div>
+        <div class="skills-item">
+            <span class="category">DevOps & Tools:</span> CI/CD (GitHub Actions), Docker, Git, Gradle, Android Studio, Postman, Play Store Console
+        </div>
+    </section>
+    
+    <!-- Professional Experience -->
+    <section>
+        <h2>Professional Experience</h2>
+        
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Senior Software Developer L2</h3>
+                <span class="duration">Nov 2025 – Present</span>
+            </div>
+            <div class="experience-company">Rysun Labs Pvt. Ltd. | Ahmedabad, India</div>
+            <ul class="experience-list">
+                <li><strong>Secure Media Engineering:</strong> Directed the complete overhaul of the "BAPS Prakash" application (50k+ users). Engineered a secure audio streaming engine using <strong>AWS CloudFront Signed Cookies</strong>, successfully preventing unauthorized access to copyright-protected content.</li>
+                <li><strong>Advanced Background Audio:</strong> Integrated <code>audio_service</code> to manage complex background tasks, lock-screen controls, and <strong>Android Auto</strong> compatibility, significantly enhancing user accessibility.</li>
+                <li><strong>Scalable Backend Design:</strong> Architected high-concurrency RESTful APIs using <strong>Node.js and TypeScript</strong> for an internal HCP ERP system, optimizing complex resource allocation logic for enterprise use.</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Senior Software Developer / Project Owner</h3>
+                <span class="duration">Apr 2022 – Oct 2025</span>
+            </div>
+            <div class="experience-company">Rysun Labs Pvt. Ltd. | Ahmedabad, India</div>
+            <ul class="experience-list">
+                <li><strong>Clean Architecture Implementation:</strong> Spearheaded the development of "Akshar Amrutam," scaling it to <strong>100,000+ downloads</strong>. Enforced strict separation of UI, Domain, and Data layers, resulting in a <strong>99.95% crash-free session rate</strong>.</li>
+                <li><strong>State Management Optimization:</strong> Utilized <strong>Flutter Bloc</strong> to manage complex application states, ensuring 60fps performance across a fragmented device market (low-end to high-end).</li>
+                <li><strong>IoT & Hardware Integration:</strong> Built the "Smartindia/Autozon" application, implementing real-time <strong>MQTT</strong> communication between mobile devices and IoT hardware. Optimized battery usage for companion apps by refactoring background services.</li>
+                <li><strong>Global Delivery:</strong> Managed end-to-end delivery of international projects (DRC USA, Max's Fun Club South Africa), ensuring strict adherence to timelines and quality standards.</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Software Engineer - Android</h3>
+                <span class="duration">Apr 2021 – Mar 2022</span>
+            </div>
+            <div class="experience-company">Phycom Corporations | Ahmedabad, India</div>
+            <ul class="experience-list">
+                <li><strong>Hardware Synchronization:</strong> Engineered robust background services for "La Crosse View," ensuring reliable data synchronization with weather station hardware.</li>
+                <li><strong>Performance Tuning:</strong> Reduced application startup time by <strong>30%</strong> and memory footprint by <strong>20%</strong> through aggressive code profiling and optimization.</li>
+                <li><strong>Legacy Migration:</strong> Refactored legacy Java codebases to <strong>Kotlin</strong>, improving code safety and reducing <code>NullPointerExceptions</code> by 95%.</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Remote Android Developer</h3>
+                <span class="duration">Aug 2017 – Dec 2019</span>
+            </div>
+            <div class="experience-company">Micro App Solutions | Surat, India</div>
+            <ul class="experience-list">
+                <li><strong>Utility App Development:</strong> Developed "Fastrrr-Floating Apps" and "Water Reminder," implementing complex overlay window permissions while maintaining strict battery efficiency protocols.</li>
+                <li><strong>Geospatial Tech:</strong> Built "OfferzZone," a hyper-local marketplace utilizing <strong>Geofencing APIs</strong> to trigger precise location-based notifications.</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="experience-header">
+                <h3>Android Developer</h3>
+                <span class="duration">Apr 2016 – Aug 2017</span>
+            </div>
+            <div class="experience-company">Stimulus Consultancy | Ahmedabad, India</div>
+            <ul class="experience-list">
+                <li><strong>Startup Engineering:</strong> Established initial CI/CD pipelines and repository structures for "City Tadka" and "Oowomaniya," reducing deployment friction in early-stage development.</li>
+                <li><strong>FinTech Logic:</strong> Implemented complex tax calculation logic for a GST application, ensuring <strong>100% accuracy</strong> during critical national policy rollouts.</li>
+            </ul>
+        </div>
+    </section>
+    
+    <!-- Education -->
+    <section>
+        <h2>Education</h2>
+        
+        <div class="education-item">
+            <div class="education-header">
+                <h3>Master of Computer Applications (M.C.A.)</h3>
+                <span class="duration">2013 – 2015</span>
+            </div>
+            <div class="education-institution">AES College of Computer Science, Ahmedabad University | Ahmedabad, India</div>
+        </div>
+        
+        <div class="education-item">
+            <div class="education-header">
+                <h3>Bachelor of Computer Applications (B.C.A.)</h3>
+                <span class="duration">2010 – 2013</span>
+            </div>
+            <div class="education-institution">Navgujarat College of Computer Applications, Gujarat University | Ahmedabad, India</div>
+        </div>
+    </section>
+</body>
+</html>

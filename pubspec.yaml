@@ -21,6 +21,8 @@ dependencies:
   shared_preferences: ^2.2.3
   flutter_screenutil: ^5.9.0
   provider: ^6.1.5+1
+  http: ^1.2.0
+  syncfusion_flutter_pdfviewer: ^24.1.41
 
 dev_dependencies:
   flutter_test:
@@ -35,4 +37,4 @@ flutter:
     - assets/animations/
     - assets/icons/
     - assets/images/
-
+    - assets/resume/

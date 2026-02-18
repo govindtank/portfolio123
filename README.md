@@ -2,6 +2,12 @@
 
 A professional Flutter portfolio application showcasing your work and skills.
 
+## 👀 Visitor Count
+
+![Visitor Count](https://api.countapi.xyz/badge/govindtank/portfolio)
+
+This counter increments every time someone visits the portfolio app!
+
 ## 🎨 Features
 
 - **Professional GT Logo** - Custom designed logo with dark theme, gold, and cyan accents
