@@ -32,5 +32,5 @@
 - All projects and information are publicly available on personal website
 
 ## Contact
-- Email: govind.tank@example.com
-- Website: www.govindtank.com
+- Email: govindtank600@gmail.com
+- Website: https://govindtank.github.io
