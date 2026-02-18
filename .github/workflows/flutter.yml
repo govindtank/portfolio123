@@ -29,7 +29,7 @@ jobs:
     - name: Build debug APK
       run: flutter build apk --debug
       
-    - name: Upload APK
+    - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
         name: app-debug.apk
@@ -37,7 +37,7 @@ jobs:
 
   build-release:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: build-android
     
     steps:
@@ -53,13 +53,25 @@ jobs:
     - name: Get dependencies
       run: flutter pub get
       
+    - name: Check if keystore secrets are available
+      id: check_secrets
+      run: |
+        if [ -n "${{ secrets.KEYSTORE_PROPERTIES }}" ] && [ -n "${{ secrets.KEYSTORE_FILE }}" ]; then
+          echo "available=true" >> $GITHUB_OUTPUT
+        else
+          echo "available=false" >> $GITHUB_OUTPUT
+          echo "Keystore secrets not configured. Skipping release build."
+        fi
+      
     - name: Build release APK
+      if: steps.check_secrets.outputs.available == 'true'
       run: flutter build apk --release
       env:
         KEYSTORE_PROPERTIES: ${{ secrets.KEYSTORE_PROPERTIES }}
         KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
         
     - name: Upload Release APK
+      if: steps.check_secrets.outputs.available == 'true'
       uses: actions/upload-artifact@v4
       with:
         name: app-release.apk
