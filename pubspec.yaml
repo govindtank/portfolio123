@@ -37,6 +37,3 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/resume/
-
-  web:
-    renderer: canvaskit
