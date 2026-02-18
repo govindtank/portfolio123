@@ -36,17 +36,6 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Dependencies installed successfully!" -ForegroundColor Green
 Write-Host ""
 
-# Analyze code
-Write-Host "Analyzing code..." -ForegroundColor Yellow
-flutter analyze
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "WARNING: Code analysis found issues" -ForegroundColor Yellow
-    Write-Host "Continuing with build..." -ForegroundColor Yellow
-} else {
-    Write-Host "Code analysis passed!" -ForegroundColor Green
-}
-Write-Host ""
-
 # Build debug APK
 Write-Host "Building debug APK..." -ForegroundColor Yellow
 Write-Host "This may take a few minutes..." -ForegroundColor Yellow
