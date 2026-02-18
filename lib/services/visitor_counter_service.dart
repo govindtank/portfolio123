@@ -1,117 +1,65 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Service for tracking and displaying visitor count using CountAPI
-/// CountAPI is a free, simple API for counting without backend setup
+/// Service for tracking visitor count using local storage
+/// This provides a simple visitor counter without any third-party dependencies
 class VisitorCounterService {
-  static const String _namespace = 'govindtank';
-  static const String _key = 'portfolio';
-  static const String _baseUrl = 'https://api.countapi.xyz';
-  
-  static const String _cacheKey = 'visitor_count';
-  static const String _lastUpdatedKey = 'visitor_count_last_updated';
+  static const String _visitorCountKey = 'visitor_count';
+  static const String _lastVisitKey = 'last_visit_date';
+  static const String _visitorIdKey = 'visitor_id';
   
   int? _cachedCount;
-  DateTime? _lastUpdated;
   
   /// Get the current visitor count
-  /// Returns cached value if available and less than 5 minutes old
-  /// Otherwise fetches fresh data from CountAPI
   Future<int> getVisitorCount() async {
-    // Check cache first
     final prefs = await SharedPreferences.getInstance();
-    final cachedCount = prefs.getInt(_cacheKey);
-    final lastUpdated = prefs.getString(_lastUpdatedKey);
-    
-    if (cachedCount != null && lastUpdated != null) {
-      final lastUpdatedTime = DateTime.parse(lastUpdated);
-      final now = DateTime.now();
-      
-      // Use cache if less than 5 minutes old
-      if (now.difference(lastUpdatedTime).inMinutes < 5) {
-        _cachedCount = cachedCount;
-        _lastUpdated = lastUpdatedTime;
-        return cachedCount;
-      }
-    }
-    
-    // Fetch fresh data
-    return await _fetchVisitorCount();
+    _cachedCount = prefs.getInt(_visitorCountKey) ?? 0;
+    return _cachedCount!;
   }
   
   /// Increment the visitor count
   /// This should be called when a user visits the portfolio
+  /// Uses a simple logic: increment once per day per device
   Future<int> incrementVisitorCount() async {
-    try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/hit/$_namespace/$_key'),
-      );
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final count = data['value'] as int;
-        
-        // Update cache
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setInt(_cacheKey, count);
-        await prefs.setString(_lastUpdatedKey, DateTime.now().toIso8601String());
-        
-        _cachedCount = count;
-        _lastUpdated = DateTime.now();
-        
-        return count;
-      }
-    } catch (e) {
-      // If API fails, return cached count or 0
-      return _cachedCount ?? await _getCachedCount();
-    }
-    
-    return _cachedCount ?? 0;
-  }
-  
-  /// Fetch visitor count from CountAPI
-  Future<int> _fetchVisitorCount() async {
-    try {
-      final response = await http.get(
-        Uri.parse('$_baseUrl/get/$_namespace/$_key'),
-      );
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        final count = data['value'] as int;
-        
-        // Update cache
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setInt(_cacheKey, count);
-        await prefs.setString(_lastUpdatedKey, DateTime.now().toIso8601String());
-        
-        _cachedCount = count;
-        _lastUpdated = DateTime.now();
-        
-        return count;
-      }
-    } catch (e) {
-      // Return cached count on error
-      return await _getCachedCount();
-    }
-    
-    return 0;
-  }
-  
-  /// Get cached count from SharedPreferences
-  Future<int> _getCachedCount() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(_cacheKey) ?? 0;
+    
+    // Get current date string (YYYY-MM-DD)
+    final today = DateTime.now().toIso8601String().split('T')[0];
+    final lastVisit = prefs.getString(_lastVisitKey);
+    
+    // Get current count
+    int count = prefs.getInt(_visitorCountKey) ?? 0;
+    
+    // Only increment if it's a new day or first visit
+    if (lastVisit == null || lastVisit != today) {
+      count++;
+      await prefs.setInt(_visitorCountKey, count);
+      await prefs.setString(_lastVisitKey, today);
+    }
+    
+    _cachedCount = count;
+    return count;
   }
   
-  /// Get the CountAPI URL for displaying in README
-  static String getCounterBadgeUrl() {
-    return '$_baseUrl/badge/$_namespace/$_key';
+  /// Force increment (for testing or manual counter management)
+  Future<int> forceIncrement() async {
+    final prefs = await SharedPreferences.getInstance();
+    int count = (prefs.getInt(_visitorCountKey) ?? 0) + 1;
+    await prefs.setInt(_visitorCountKey, count);
+    _cachedCount = count;
+    return count;
   }
   
-  /// Get the CountAPI URL for incrementing
-  static String getIncrementUrl() {
-    return '$_baseUrl/hit/$_namespace/$_key';
+  /// Reset the visitor count
+  Future<void> resetCount() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_visitorCountKey);
+    await prefs.remove(_lastVisitKey);
+    await prefs.remove(_visitorIdKey);
+    _cachedCount = 0;
+  }
+  
+  /// Get cached count without fetching from storage
+  int? getCachedCount() {
+    return _cachedCount;
   }
 }

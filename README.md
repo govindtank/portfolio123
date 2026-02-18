@@ -2,12 +2,6 @@
 
 A professional Flutter portfolio application showcasing your work and skills.
 
-## 👀 Visitor Count
-
-![Visitor Count](https://api.countapi.xyz/badge/govindtank/portfolio)
-
-This counter increments every time someone visits the portfolio app!
-
 ## 🎨 Features
 
 - **Professional GT Logo** - Custom designed logo with dark theme, gold, and cyan accents
@@ -16,6 +10,8 @@ This counter increments every time someone visits the portfolio app!
 - **Portrait & Landscape Support** - Seamless orientation switching
 - **API Level 36** - Latest Android compatibility
 - **16KB Page Size** - Optimized for modern Android devices
+- **Resume Display** - Beautiful resume display with PDF download option
+- **Visitor Counter** - Tracks daily unique visitors
 
 ## 📱 Screenshots
 
@@ -125,6 +121,7 @@ This project uses GitHub Actions for automated builds:
 - **Debug APK** - Built on every push and pull request
 - **Release APK** - Built on main branch (requires keystore secrets)
 - **Privacy Policy** - Automatically deployed to GitHub Pages
+- **Flutter Web** - Automatically built and deployed to GitHub Pages
 
 ### Download Artifacts
 
@@ -171,7 +168,8 @@ portfolio/
 ├── assets/                  # App assets
 │   ├── animations/         # Lottie animations
 │   ├── icons/              # App icons
-│   └── images/             # Images
+│   ├── images/             # Images
+│   └── resume/             # Resume files
 ├── lib/                     # Dart source code
 │   ├── main.dart           # App entry point
 │   └── screens/            # App screens

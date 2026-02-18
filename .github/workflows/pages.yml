@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -24,16 +24,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+        working-directory: portfolio
+
+      - name: Build Flutter Web
+        run: flutter build web --release --base-href "/portfolio/"
+        working-directory: portfolio
 
       - name: Create .nojekyll file
-        run: touch portfolio/.nojekyll
+        run: touch build/web/.nojekyll
+        working-directory: portfolio
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'portfolio/'
+          path: 'portfolio/build/web/'
 
       - name: Deploy to GitHub Pages
         id: deployment
