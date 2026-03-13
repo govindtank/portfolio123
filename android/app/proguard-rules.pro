@@ -14,7 +14,7 @@
 -dontwarn com.google.android.gms.**
 
 # Flutter Animate
--keep class package:flutter_animate.** { *; }
+-keep class flutter_animate.** { *; }
 
 # Lottie
 -dontwarn com.airbnb.lottie.**

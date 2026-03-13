@@ -21,8 +21,8 @@ if (keystoreExists) {
 
 android {
     namespace "com.govindtank.portfolio"
-    compileSdkVersion 34
-    ndkVersion flutter.ndkVersion
+    compileSdkVersion 35
+    ndkVersion "26.1.10909125"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -39,18 +39,12 @@ android {
 
     defaultConfig {
         applicationId "com.govindtank.portfolio"
-        minSdkVersion 23
-        targetSdkVersion 34
+        minSdkVersion 24
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        
-        // Enable R8 full mode for better code shrinking and obfuscation
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        
-        // Enable vector drawable support
-        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -58,7 +52,7 @@ android {
             if (keystoreExists) {
                 keyAlias keystoreProperties['keyAlias']
                 keyPassword keystoreProperties['keyPassword']
-                storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+                storeFile keystoreProperties['storeFile'] ? file("../${keystoreProperties['storeFile']}") : null
                 storePassword keystoreProperties['storePassword']
             }
         }
@@ -84,7 +78,7 @@ android {
             shrinkResources true
             minifyEnabled true
             
-            // Use the release signing config if keystore exists, otherwise use debug
+            // Use the production release signing config
             signingConfig keystoreExists ? signingConfigs.release : signingConfigs.debug
             
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -97,29 +91,6 @@ android {
     // Enable view binding
     buildFeatures {
         viewBinding true
-    }
-    
-    // Configure APK splits to reduce APK size
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-            universalApk true
-        }
-    }
-    
-    // Configure APK version codes for each ABI
-    project.ext.versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
-    
-    android.applicationVariants.all { variant ->
-        variant.outputs.all { output ->
-            def versionCodes = ['armeabi-v7a': 1, 'x86': 2, 'arm64-v8a': 3, 'x86_64': 4]
-            def abi = output.getFilter(com.android.build.OutputFile.ABI)
-            if (abi != null) {
-                output.versionCodeOverride = versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
-        }
     }
 }
 

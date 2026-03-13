@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_provider.dart';
 import 'screens/splash_screen.dart';
 
 void main() {
@@ -38,25 +41,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Govind Tank - Portfolio',
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFFD700), // Gold color from logo
-          brightness: Brightness.light,
-        ),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'Govind Tank - Portfolio',
+            theme: AppTheme.lightTheme,
+            darkTheme: AppTheme.darkTheme,
+            themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+            debugShowCheckedModeBanner: false,
+            home: const SplashScreen(),
+          );
+        },
       ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFFFD700), // Gold color from logo
-          brightness: Brightness.dark,
-        ),
-      ),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
     );
   }
 }

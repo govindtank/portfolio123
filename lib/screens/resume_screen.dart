@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../services/visitor_counter_service.dart';
 

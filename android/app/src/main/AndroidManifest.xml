@@ -2,11 +2,22 @@
     <!-- Internet permission for url_launcher -->
     <uses-permission android:name="android.permission.INTERNET"/>
     
+    <!-- 16KB page size compatibility for Android 15+ -->
+    <supports-screens 
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true" />
+    
     <application
         android:label="Govind Tank"
-        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="false">
+        
+        <!-- Declare 16KB page size support for Android 15+ -->
+        <property android:name="android.app.property.SUPPORTS_16KB_PAGE_SIZE" android:value="true" />
+        
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -2,70 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
 
 import '../data/portfolio_data.dart';
 import '../models/portfolio_data.dart';
-
-class AppColors {
-  static const Color primary = Color(0xFF6C63FF);
-  static const Color secondary = Color(0xFFFF6584);
-  static const Color dark = Color(0xFF1E1E2C);
-  static const Color light = Color(0xFFFFFFFF);
-}
-
-class AppTextStyles {
-  static TextStyle displayLarge(BuildContext context) => TextStyle(
-        fontSize: 48,
-        fontWeight: FontWeight.bold,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white 
-            : AppColors.dark,
-        height: 1.2,
-      );
-       
-  static TextStyle displayMedium(BuildContext context) => TextStyle(
-        fontSize: 36,
-        fontWeight: FontWeight.bold,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white 
-            : AppColors.dark,
-        height: 1.2,
-      );
-       
-  static TextStyle headlineLarge(BuildContext context) => TextStyle(
-        fontSize: 28,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white 
-            : AppColors.dark,
-        height: 1.3,
-      );
-       
-  static TextStyle headlineMedium(BuildContext context) => TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white 
-            : AppColors.dark,
-        height: 1.3,
-      );
-       
-  static TextStyle bodyLarge(BuildContext context) => TextStyle(
-        fontSize: 16,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white70 
-            : Colors.black54,
-        height: 1.6,
-      );
-       
-  static TextStyle bodyMedium(BuildContext context) => TextStyle(
-        fontSize: 14,
-        color: Theme.of(context).brightness == Brightness.dark 
-            ? Colors.white70 
-            : Colors.black54,
-        height: 1.5,
-      );
-}
+import '../core/theme/app_theme.dart';
+import '../core/theme/theme_provider.dart';
 
 class AnimatedBackground extends StatelessWidget {
   final Widget child;
@@ -134,13 +76,13 @@ class GlassCard extends StatelessWidget {
       padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: isDark 
-            ? Colors.white.withOpacity(0.05)
-            : Colors.white,
+            ? AppColors.darkSurface.withOpacity(0.8)
+            : AppColors.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isDark
-              ? Colors.white.withOpacity(0.1)
-              : Colors.grey.shade200,
+              ? AppColors.darkBorder
+              : AppColors.border,
           width: 1,
         ),
         boxShadow: [
@@ -158,78 +100,48 @@ class GlassCard extends StatelessWidget {
   }
 }
 
-class HomePage extends StatefulWidget {
-  final bool isDarkMode;
-  final VoidCallback onThemeChanged;
-
-  const HomePage({
-    super.key,
-    required this.isDarkMode,
-    required this.onThemeChanged,
-  });
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final ScrollController _scrollController = ScrollController();
-
-  bool get _isDarkMode => widget.isDarkMode;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _toggleTheme() {
-    widget.onThemeChanged();
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final data = portfolioData;
-    
     return AnimatedBackground(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(data.name),
+          title: const Text('Govind Tank'),
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
-            IconButton(
-              icon: Icon(_isDarkMode ? Icons.light_mode : Icons.dark_mode),
-              onPressed: _toggleTheme,
+            Consumer<ThemeProvider>(
+              builder: (context, themeProvider, child) {
+                return IconButton(
+                  icon: Icon(themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+                  onPressed: themeProvider.toggleTheme,
+                );
+              },
             ),
           ],
         ),
         body: SingleChildScrollView(
-          controller: _scrollController,
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeaderSection(context, data),
+                _buildHeaderSection(context),
                 const SizedBox(height: 40),
-                _buildAboutSection(context, data),
+                _buildAboutSection(context),
                 const SizedBox(height: 40),
-                _buildSkillsSection(context, data),
+                _buildSkillsSection(context),
                 const SizedBox(height: 40),
-                _buildExperienceSection(context, data),
+                _buildExperienceSection(context),
                 const SizedBox(height: 40),
-                _buildProjectsSection(context, data),
+                _buildProjectsSection(context),
                 const SizedBox(height: 40),
-                _buildEducationSection(context, data),
+                _buildEducationSection(context),
                 const SizedBox(height: 40),
-                _buildContactSection(context, data),
+                _buildContactSection(context),
                 const SizedBox(height: 100),
               ],
             ),
@@ -239,7 +151,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context, Person data) {
+  Widget _buildHeaderSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GlassCard(
       padding: const EdgeInsets.all(30),
       child: Column(
@@ -276,13 +190,13 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 20),
           Text(
             data.name,
-            style: AppTextStyles.displayMedium(context),
+            style: AppTextStyles.displayMedium(context, isDark: isDark),
           ).animate().fadeIn(delay: 200.ms),
           const SizedBox(height: 8),
           Text(
             data.role,
             textAlign: TextAlign.center,
-            style: AppTextStyles.bodyLarge(context)?.copyWith(
+            style: AppTextStyles.bodyLarge(context, isDark: isDark)?.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w600,
             ),
@@ -292,11 +206,11 @@ class _HomePageState extends State<HomePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.location_on, size: 16, color: Colors.grey),
+                Icon(Icons.location_on, size: 16, color: isDark ? Colors.grey[400] : Colors.grey[600]),
                 const SizedBox(width: 4),
                 Text(
                   data.location!,
-                  style: AppTextStyles.bodyMedium(context),
+                  style: AppTextStyles.bodyMedium(context, isDark: isDark),
                 ),
               ],
             ).animate().fadeIn(delay: 600.ms),
@@ -306,37 +220,41 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAboutSection(BuildContext context, Person data) {
+  Widget _buildAboutSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.person, color: AppColors.primary),
+              Icon(Icons.person, color: AppColors.primary),
               const SizedBox(width: 10),
-              Text('About Me', style: AppTextStyles.headlineMedium(context)),
+              Text('About Me', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
             ],
           ),
           const SizedBox(height: 16),
           Text(
             data.summary,
-            style: AppTextStyles.bodyLarge(context),
+            style: AppTextStyles.bodyLarge(context, isDark: isDark),
           ),
         ],
       ),
     ).animate().fadeIn().slideX(begin: -0.1);
   }
 
-  Widget _buildSkillsSection(BuildContext context, Person data) {
+  Widget _buildSkillsSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const Icon(Icons.code, color: AppColors.primary),
+            Icon(Icons.code, color: AppColors.primary),
             const SizedBox(width: 10),
-            Text('Skills & Technologies', style: AppTextStyles.headlineMedium(context)),
+            Text('Skills & Technologies', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
           ],
         ),
         const SizedBox(height: 20),
@@ -378,15 +296,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildExperienceSection(BuildContext context, Person data) {
+  Widget _buildExperienceSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const Icon(Icons.work, color: AppColors.primary),
+            Icon(Icons.work, color: AppColors.primary),
             const SizedBox(width: 10),
-            Text('Work Experience', style: AppTextStyles.headlineMedium(context)),
+            Text('Work Experience', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
           ],
         ),
         const SizedBox(height: 20),
@@ -404,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Text(
                         exp.role,
-                        style: AppTextStyles.headlineLarge(context)?.copyWith(fontSize: 18),
+                        style: AppTextStyles.headlineLarge(context, isDark: isDark)?.copyWith(fontSize: 18),
                       ),
                     ),
                     Container(
@@ -427,11 +347,11 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.business, size: 16, color: AppColors.secondary),
+                    Icon(Icons.business, size: 16, color: AppColors.secondary),
                     const SizedBox(width: 6),
                     Text(
                       exp.company + (exp.location != null ? ' | ${exp.location}' : ''),
-                      style: AppTextStyles.bodyMedium(context)?.copyWith(
+                      style: AppTextStyles.bodyMedium(context, isDark: isDark)?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -440,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 12),
                 Text(
                   exp.description,
-                  style: AppTextStyles.bodyMedium(context),
+                  style: AppTextStyles.bodyMedium(context, isDark: isDark),
                 ),
               ],
             ),
@@ -450,15 +370,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildProjectsSection(BuildContext context, Person data) {
+  Widget _buildProjectsSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const Icon(Icons.folder, color: AppColors.primary),
+            Icon(Icons.folder, color: AppColors.primary),
             const SizedBox(width: 10),
-            Text('Featured Projects', style: AppTextStyles.headlineMedium(context)),
+            Text('Featured Projects', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
           ],
         ),
         const SizedBox(height: 20),
@@ -476,7 +398,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: Text(
                         project.name,
-                        style: AppTextStyles.headlineLarge(context)?.copyWith(fontSize: 18),
+                        style: AppTextStyles.headlineLarge(context, isDark: isDark)?.copyWith(fontSize: 18),
                       ),
                     ),
                     if (project.link != null)
@@ -489,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 12),
                 Text(
                   project.description,
-                  style: AppTextStyles.bodyMedium(context),
+                  style: AppTextStyles.bodyMedium(context, isDark: isDark),
                 ),
                 const SizedBox(height: 12),
                 Wrap(
@@ -519,15 +441,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildEducationSection(BuildContext context, Person data) {
+  Widget _buildEducationSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            const Icon(Icons.school, color: AppColors.primary),
+            Icon(Icons.school, color: AppColors.primary),
             const SizedBox(width: 10),
-            Text('Education', style: AppTextStyles.headlineMedium(context)),
+            Text('Education', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
           ],
         ),
         const SizedBox(height: 20),
@@ -542,7 +466,7 @@ class _HomePageState extends State<HomePage> {
                   color: AppColors.primary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(Icons.school, color: AppColors.primary),
+                child: Icon(Icons.school, color: AppColors.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -551,13 +475,13 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text(
                       edu.degree,
-                      style: AppTextStyles.bodyLarge(context)?.copyWith(
+                      style: AppTextStyles.bodyLarge(context, isDark: isDark)?.copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     Text(
                       edu.institution,
-                      style: AppTextStyles.bodyMedium(context),
+                      style: AppTextStyles.bodyMedium(context, isDark: isDark),
                     ),
                   ],
                 ),
@@ -584,34 +508,37 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildContactSection(BuildContext context, Person data) {
+  Widget _buildContactSection(BuildContext context) {
+    final data = portfolioData;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.contact_mail, color: AppColors.primary),
+              Icon(Icons.contact_mail, color: AppColors.primary),
               const SizedBox(width: 10),
-              Text('Get In Touch', style: AppTextStyles.headlineMedium(context)),
+              Text('Get In Touch', style: AppTextStyles.headlineMedium(context, isDark: isDark)),
             ],
           ),
           const SizedBox(height: 20),
-          _buildContactRow(Icons.email, 'Email', data.contact.email ?? '', 'mailto:${data.contact.email}'),
+          _buildContactRow(context, Icons.email, 'Email', data.contact.email ?? '', 'mailto:${data.contact.email}'),
           if (data.contact.phone != null)
-            _buildContactRow(Icons.phone, 'Phone', data.contact.phone!, 'tel:${_formatPhoneNumber(data.contact.phone!)}'),
+            _buildContactRow(context, Icons.phone, 'Phone', data.contact.phone!, 'tel:${_formatPhoneNumber(data.contact.phone!)}'),
           if (data.contact.linkedin != null)
-            _buildContactRow(Icons.business, 'LinkedIn', _extractDisplayUrl(data.contact.linkedin!), data.contact.linkedin!),
+            _buildContactRow(context, Icons.business, 'LinkedIn', _extractDisplayUrl(data.contact.linkedin!), data.contact.linkedin!),
           if (data.contact.github != null)
-            _buildContactRow(Icons.code, 'GitHub', _extractDisplayUrl(data.contact.github!), data.contact.github!),
+            _buildContactRow(context, Icons.code, 'GitHub', _extractDisplayUrl(data.contact.github!), data.contact.github!),
           if (data.contact.website != null)
-            _buildContactRow(Icons.alternate_email, 'X (Twitter)', _extractDisplayUrl(data.contact.website!), data.contact.website!),
+            _buildContactRow(context, Icons.alternate_email, 'X (Twitter)', _extractDisplayUrl(data.contact.website!), data.contact.website!),
         ],
       ),
     ).animate().fadeIn().slideY(begin: 0.1);
   }
 
-  Widget _buildContactRow(IconData icon, String label, String displayValue, String url) {
+  Widget _buildContactRow(BuildContext context, IconData icon, String label, String displayValue, String url) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: InkWell(
@@ -638,14 +565,14 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       label,
                       style: TextStyle(
-                        color: _isDarkMode ? Colors.grey : Colors.grey[600],
+                        color: isDark ? Colors.grey[400] : Colors.grey[600],
                         fontSize: 12,
                       ),
                     ),
                     Text(
                       displayValue,
                       style: TextStyle(
-                        color: _isDarkMode ? Colors.white : AppColors.dark,
+                        color: isDark ? AppColors.darkOnSurface : AppColors.onSurface,
                         fontWeight: FontWeight.w500,
                         fontSize: 14,
                       ),
@@ -656,7 +583,7 @@ class _HomePageState extends State<HomePage> {
               Icon(
                 Icons.open_in_new,
                 size: 16,
-                color: _isDarkMode ? Colors.white54 : Colors.grey,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
               ),
             ],
           ),
