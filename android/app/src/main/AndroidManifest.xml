@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="false">
         
         <!-- Declare 16KB page size support for Android 15+ -->
-        <property android:name="android.app.property.SUPPORTS_16KB_PAGE_SIZE" android:value="true" />
+        <meta-data android:name="android.app.property.SUPPORTS_16KB_PAGE_SIZE" android:value="true" />
         
         <activity
             android:name=".MainActivity"

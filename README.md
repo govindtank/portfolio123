@@ -13,9 +13,58 @@ A professional Flutter portfolio application showcasing your work and skills.
 - **Resume Display** - Beautiful resume display with PDF download option
 - **Visitor Counter** - Tracks daily unique visitors
 
-## 📱 Screenshots
+## 📱 App Screenshots
 
-Coming soon...
+### 🎨 App Logo
+<div align="center">
+  <img src="screenshots/Code_Generated_Image.png" alt="Portfolio App Logo" width="200" style="border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+</div>
+
+### 🌟 App Preview
+
+<div align="center">
+
+#### 🚀 Splash Screen
+<img src="screenshots/screenshot_splash.png" alt="Splash Screen" width="250" style="border-radius: 15px; margin: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+
+#### 🌙 Dark Theme
+<table>
+  <tr>
+    <td><img src="screenshots/screenshot_dark_theme.png" alt="Dark Theme 1" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+    <td><img src="screenshots/screenshot_dark_theme2.png" alt="Dark Theme 2" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+  </tr>
+</table>
+
+#### ☀️ Light Theme
+<table>
+  <tr>
+    <td><img src="screenshots/screenshot_light_theme.png" alt="Light Theme 1" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+    <td><img src="screenshots/screenshot_light_theme_2.png" alt="Light Theme 2" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+  </tr>
+</table>
+
+#### 📱 Additional Screens
+<table>
+  <tr>
+    <td><img src="screenshots/screenshot1.png" alt="Screen 1" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+    <td><img src="screenshots/screenshot-1773398918565.png" alt="Screen 2" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/screenshot-1773398930281.png" alt="Screen 3" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+    <td><img src="screenshots/Code_Generated_Image.jpg" alt="Screen 4" width="250" style="border-radius: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"></td>
+  </tr>
+</table>
+
+</div>
+
+### ✨ Key Features Showcased
+
+- **🎨 Professional Design**: Modern, clean interface with custom GT logo
+- **🌙 Dark Mode Support**: Beautiful dark theme with gold and cyan accents
+- **☀️ Light Mode**: Clean and bright interface for daytime usage
+- **🚀 Animated Splash**: Smooth and engaging app launch experience
+- **📱 Responsive Layout**: Optimized for various screen sizes and orientations
+- **🎯 User-Friendly**: Intuitive navigation and professional presentation
 
 ## 🚀 Getting Started
 

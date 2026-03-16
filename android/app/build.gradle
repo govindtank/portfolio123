@@ -21,8 +21,8 @@ if (keystoreExists) {
 
 android {
     namespace "com.govindtank.portfolio"
-    compileSdkVersion 35
-    ndkVersion "26.1.10909125"
+    compileSdkVersion 36
+    ndkVersion "28.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -40,11 +40,18 @@ android {
     defaultConfig {
         applicationId "com.govindtank.portfolio"
         minSdkVersion 24
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        
+        // 16KB page size support configuration
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+            }
+        }
     }
 
     signingConfigs {
@@ -91,6 +98,14 @@ android {
     // Enable view binding
     buildFeatures {
         viewBinding true
+    }
+    
+    // 16KB page size support - packaging options
+    packagingOptions {
+        jniLibs {
+            // Use legacy packaging for 16KB compatibility
+            useLegacyPackaging true
+        }
     }
 }
 
