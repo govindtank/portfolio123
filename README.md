@@ -78,7 +78,7 @@ A professional Flutter portfolio application showcasing your work and skills.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/govindtank/portfolio.git
+   git clone https://github.com/govindtank/portfolioApp.git
    cd portfolio
    ```
 
@@ -136,7 +136,7 @@ build/app/outputs/flutter-apk/app-release.apk
 
 The privacy policy for this app is hosted on GitHub Pages:
 
-**URL:** https://govindtank.github.io/portfolio/privacy_policy.html
+**URL:** https://govindtank.github.io/portfolioApp/privacy_policy.html
 
 The privacy policy covers:
 - Data collection and usage
@@ -174,7 +174,7 @@ This project uses GitHub Actions for automated builds:
 
 ### Download Artifacts
 
-1. Go to the [Actions tab](https://github.com/govindtank/portfolio/actions)
+1. Go to the [Actions tab](https://github.com/govindtank/portfolioApp/actions)
 2. Click on a completed workflow run
 3. Download artifacts from the workflow run
 
@@ -191,9 +191,6 @@ This project uses GitHub Actions for automated builds:
 - [ ] Build release APK
 - [ ] Verify privacy policy URL
 
-### Store Listing
-
-See [PLAY_STORE_LISTING.md](PLAY_STORE_LISTING.md) for detailed store listing requirements.
 
 ## 🛠️ Tech Stack
 
@@ -252,7 +249,7 @@ Contributions, issues, and feature requests are welcome!
 
 ## 📞 Support
 
-For support, email support@example.com or open an issue in the repository.
+For support, email govindtank600@gmail.com or open an issue in the repository.
 
 ---
 
