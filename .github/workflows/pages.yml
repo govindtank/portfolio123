@@ -34,7 +34,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Flutter Web (CanvasKit)
-        run: flutter build web --release --base-href "/portfolio/" --web-renderer canvaskit
+        run: flutter build web --release --base-href "/portfolioApp/" --web-renderer canvaskit
 
       - name: Create .nojekyll file
         run: touch build/web/.nojekyll

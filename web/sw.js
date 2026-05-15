@@ -1,24 +1,24 @@
 // Service Worker for PWA support - Generated for GitHub Pages deployment
 const CACHE_NAME = 'portfolio-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/favicon.png',
-  '/flutter_bootstrap.js',
-  '/assets/images/profile.png',
+  '/portfolioApp/',
+  '/portfolioApp/index.html',
+  '/portfolioApp/manifest.json',
+  '/portfolioApp/favicon.png',
+  '/portfolioApp/flutter_bootstrap.js',
+  '/portfolioApp/assets/images/profile.png',
 
-  '/assets/images/feature_graphic.svg',
-  '/assets/icons/icon.png',
-  '/assets/icons/icon.svg',
-  '/assets/icons/gt_logo.svg',
-  '/assets/animations/loading_animation.json',
-  '/assets/animations/error_animation.json',
-  '/assets/resume/Govind_Tank_Resume.html',
-  '/icons/Icon-192.png',
-  '/icons/Icon-512.png',
-  '/icons/Icon-maskable-192.png',
-  '/icons/Icon-maskable-512.png',
+  '/portfolioApp/assets/images/feature_graphic.svg',
+  '/portfolioApp/assets/icons/icon.png',
+  '/portfolioApp/assets/icons/icon.svg',
+  '/portfolioApp/assets/icons/gt_logo.svg',
+  '/portfolioApp/assets/animations/loading_animation.json',
+  '/portfolioApp/assets/animations/error_animation.json',
+  '/portfolioApp/assets/resume/Govind_Tank_Resume.html',
+  '/portfolioApp/icons/Icon-192.png',
+  '/portfolioApp/icons/Icon-512.png',
+  '/portfolioApp/icons/Icon-maskable-192.png',
+  '/portfolioApp/icons/Icon-maskable-512.png',
 ];
 
 self.addEventListener('install', (event) => {
