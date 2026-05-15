@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
 import 'core/theme/app_theme.dart';
@@ -9,29 +10,33 @@ import 'screens/splash_screen.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Set preferred orientations (portrait and landscape)
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.landscapeLeft,
-    DeviceOrientation.landscapeRight,
-  ]);
-  
-  // Enable edge-to-edge
-  SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.edgeToEdge,
-    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-  );
-  
-  // Set system UI overlay style for dark theme
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Colors.transparent,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ),
-  );
+  // SystemChrome calls are not fully supported on web. Guard them so the
+  // app doesn't crash or hang when running in a browser.
+  if (!kIsWeb) {
+    // Set preferred orientations (portrait and landscape)
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    // Enable edge-to-edge
+    SystemChrome.setEnabledSystemUIMode(
+      SystemUiMode.edgeToEdge,
+      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+    );
+
+    // Set system UI overlay style for dark theme
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.light,
+      ),
+    );
+  }
   
   runApp(const MyApp());
 }
@@ -47,8 +52,8 @@ class MyApp extends StatelessWidget {
         builder: (context, themeProvider, child) {
           return MaterialApp(
             title: 'Govind Tank - Portfolio',
-            theme: AppTheme.lightTheme,
-            darkTheme: AppTheme.darkTheme,
+            theme: AppTheme.lightTheme(themeProvider.accentColor),
+            darkTheme: AppTheme.darkTheme(themeProvider.accentColor),
             themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
             debugShowCheckedModeBanner: false,
             home: const SplashScreen(),

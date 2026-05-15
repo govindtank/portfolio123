@@ -82,7 +82,7 @@ class CustomCard extends StatelessWidget {
     Color cardColor = color ?? 
         (isGlassmorphic 
             ? Colors.white.withOpacity(0.1) 
-            : (color ?? theme.cardColor));
+            : (isDark ? theme.cardColor : const Color(0xFFF8F9FC)));
     
     // Create the base card
     Widget card = AnimatedContainer(
@@ -105,11 +105,18 @@ class CustomCard extends StatelessWidget {
             ? [
                 BoxShadow(
                   color: (shadowColor ?? 
-                      (isDark ? Colors.black : Colors.grey.withOpacity(0.3))),
-                  offset: shadowOffset ?? const Offset(0, 4),
+                      (isDark ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.1))),
+                  offset: shadowOffset ?? const Offset(0, 6),
                   blurRadius: shadowBlurRadius,
                   spreadRadius: shadowSpreadRadius,
                 ),
+                if (!isDark)
+                  BoxShadow(
+                    color: const Color(0xFFF0F4F8).withOpacity(0.5),
+                    offset: const Offset(0, 1),
+                    blurRadius: 0,
+                    spreadRadius: 0,
+                  ),
               ]
             : null,
       ),

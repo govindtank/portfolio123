@@ -2,7 +2,7 @@ import '../models/portfolio_data.dart';
 
 final Person portfolioData = Person(
   name: 'Govind Tank',
-  role: 'Senior Mobile Application Developer (Kotlin | Flutter)',
+  role: 'FullStack Mobile Developer',
   location: 'Gandhinagar, Gujarat, India',
   summary:
       'High-performance Senior Mobile Application Developer with 9+ years of experience architecting scalable Android (Kotlin/Java) and Cross-Platform (Flutter) solutions. Proven track record of delivering applications serving 100,000+ active users with 99.9% crash-free stability. Specialized in Clean Architecture, MVVM/Bloc patterns, and modern UI toolkits like Jetpack Compose. Forward-thinking advocate for AI-augmented development, leveraging coding agents like Cursor and Windsurf to accelerate delivery cycles and enhance code quality.',
@@ -16,6 +16,7 @@ final Person portfolioData = Person(
         'TypeScript',
         'JavaScript (Node.js)',
         'SQL',
+        'Python'
       ],
     ),
     Skill(
@@ -58,6 +59,7 @@ final Person portfolioData = Person(
       items: [
         'Node.js',
         'Express.js',
+        'Python FastAPI'
         'Firebase (Auth, Firestore, FCM)',
         'AWS CloudFront',
         'RESTful APIs',
@@ -143,7 +145,7 @@ final Person portfolioData = Person(
           '• Directed complete overhaul of "BAPS Prakash" app (50k+ users) with secure AWS CloudFront audio streaming\n• Integrated audio_service for background tasks, lock-screen controls, and Android Auto compatibility\n• Architected high-concurrency RESTful APIs using Node.js and TypeScript for HCP ERP system',
     ),
     Experience(
-      role: 'Senior Software Developer / Project Owner',
+      role: 'Senior Software Developer',
       company: 'Rysun Labs Pvt. Ltd.',
       duration: 'Apr 2022 -- Oct 2024',
       location: 'Ahmedabad, India',

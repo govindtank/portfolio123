@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 import 'home_page.dart';
-import 'resume_screen.dart';
-import '../core/theme/theme_provider.dart';
 import '../services/visitor_counter_service.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,21 +12,31 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   final VisitorCounterService _visitorCounterService = VisitorCounterService();
+  late AnimationController _orbitController;
 
   @override
   void initState() {
     super.initState();
+    _orbitController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 8),
+    )..repeat();
     _initializeAndNavigate();
   }
 
-  Future<void> _initializeAndNavigate() async {
-    // Increment visitor counter on app load
-    await _visitorCounterService.incrementVisitorCount();
+  @override
+  void dispose() {
+    _orbitController.dispose();
+    super.dispose();
+  }
 
-    // Navigate to home after delay
-    await Future.delayed(const Duration(milliseconds: 2500));
+  Future<void> _initializeAndNavigate() async {
+    _visitorCounterService.incrementVisitorCount().catchError((_) {
+      debugPrint('Failed to increment visitor count');
+    });
+    await Future.delayed(const Duration(milliseconds: 3000));
     if (mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
@@ -41,93 +49,177 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final screenSize = MediaQuery.of(context).size;
+    final isMobile = screenSize.width < 600;
+    
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF121212) : const Color(0xFFF8F9FF),
+          gradient: LinearGradient(
+            colors: isDark
+                ? [
+                    const Color(0xFF121212),
+                    const Color(0xFF1A1A2E),
+                    const Color(0xFF0F3460),
+                  ]
+                : [
+                    const Color(0xFFF8F9FF),
+                    const Color(0xFFE8EEFF),
+                    const Color(0xFFDDE5FF),
+                  ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            stops: const [0.0, 0.5, 1.0],
+          ),
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
             children: [
-              // GT Logo Container with Hexagon
-              Container(
-                width: 180,
-                height: 180,
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                      color: isDark ? Colors.black.withOpacity(0.5) : Colors.black.withOpacity(0.1),
-                      blurRadius: 30,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-                child: Center(
-                  child: _buildGTLogo(isDark),
-                ),
-              )
-                  .animate()
-                  .scale(
-                    begin: const Offset(0.5, 0.5),
-                    end: const Offset(1.0, 1.0),
-                    duration: 600.ms,
-                    curve: Curves.easeOutBack,
-                  )
-                  .fadeIn(duration: 400.ms),
-              const SizedBox(height: 40),
-              // App Name
-              Text(
-                'Govind Tank',
-                style: TextStyle(
-                  color: const Color(0xFFFFD700), // Gold color
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 1.5,
-                  shadows: [
-                    Shadow(
-                      color: isDark ? Colors.black54 : Colors.black26,
-                      blurRadius: 10,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-              )
-                  .animate()
-                  .fadeIn(delay: 300.ms, duration: 500.ms)
-                  .slideY(begin: 0.3, end: 0, delay: 300.ms, duration: 500.ms),
-              const SizedBox(height: 8),
-              // Tagline
-              Text(
-                'Portfolio',
-                style: TextStyle(
-                  color: const Color(0xFF00E5FF), // Cyan color
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 3,
-                ),
-              )
-                  .animate()
-                  .fadeIn(delay: 500.ms, duration: 500.ms)
-                  .slideY(begin: 0.3, end: 0, delay: 500.ms, duration: 500.ms),
-              const SizedBox(height: 60),
-              // Loading indicator
-              SizedBox(
-                width: 40,
-                height: 40,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    const Color(0xFF00E5FF).withOpacity(0.8),
+              // Animated background particles
+              ..._buildBackgroundParticles(isDark),
+              
+              // Main content
+              Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: isMobile ? 20 : 40),
+                      
+                      // Profile Picture with Orbital Animation
+                      SizedBox(
+                        height: isMobile ? 280 : 320,
+                        width: isMobile ? 280 : 320,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Orbital rings
+                            _buildOrbitalRings(isDark),
+                            
+                            // Rotating profile picture
+                            AnimatedBuilder(
+                              animation: _orbitController,
+                              builder: (context, child) {
+                                return Transform.rotate(
+                                  angle: _orbitController.value * 2 * math.pi,
+                                  child: child,
+                                );
+                              },
+                              child: Container(
+                                width: isMobile ? 180 : 220,
+                                height: isMobile ? 180 : 220,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: const DecorationImage(
+                                    image: AssetImage('assets/images/profile.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF6C63FF).withOpacity(0.6),
+                                      blurRadius: 40,
+                                      spreadRadius: 10,
+                                    ),
+                                    BoxShadow(
+                                      color: const Color(0xFFFF6584).withOpacity(0.3),
+                                      blurRadius: 60,
+                                      spreadRadius: 20,
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                    color: isDark
+                                        ? const Color(0xFF6C63FF).withOpacity(0.5)
+                                        : const Color(0xFF6C63FF).withOpacity(0.3),
+                                    width: 3,
+                                  ),
+                                ),
+                              ),
+                            ).animate().scale(
+                              begin: const Offset(0, 0),
+                              end: const Offset(1, 1),
+                              duration: 800.ms,
+                              curve: Curves.elasticOut,
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      SizedBox(height: isMobile ? 30 : 50),
+                      
+                      // Name
+                      Text(
+                        'Govind Tank',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isDark ? Colors.white : const Color(0xFF121212),
+                          fontSize: isMobile ? 28 : 40,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(delay: 600.ms, duration: 600.ms)
+                          .slideY(begin: 0.3, end: 0, delay: 600.ms, duration: 600.ms),
+                      
+                      const SizedBox(height: 12),
+                      
+                      // Role with gradient text
+                      ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [
+                            const Color(0xFF6C63FF),
+                            const Color(0xFFFF6584),
+                            const Color(0xFF00E5FF),
+                          ],
+                        ).createShader(bounds),
+                        child: Text(
+                          'Senior Mobile Developer',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: isMobile ? 16 : 20,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(delay: 800.ms, duration: 600.ms)
+                          .slideY(begin: 0.3, end: 0, delay: 800.ms, duration: 600.ms),
+                      
+                      const SizedBox(height: 8),
+                      
+                      // Tagline
+                      Text(
+                        'Kotlin • Flutter • Web',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: isDark
+                              ? Colors.white70
+                              : const Color(0xFF666666),
+                          fontSize: isMobile ? 14 : 16,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 2,
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(delay: 1000.ms, duration: 600.ms)
+                          .slideY(begin: 0.3, end: 0, delay: 1000.ms, duration: 600.ms),
+                      
+                      SizedBox(height: isMobile ? 40 : 60),
+                      
+                      // Animated loading indicator
+                      _buildCustomLoadingIndicator(isDark)
+                          .animate()
+                          .fadeIn(delay: 1200.ms, duration: 400.ms),
+                      
+                      SizedBox(height: isMobile ? 40 : 60),
+                    ],
                   ),
                 ),
-              )
-                  .animate()
-                  .fadeIn(delay: 800.ms, duration: 400.ms),
+              ),
             ],
           ),
         ),
@@ -135,73 +227,152 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Widget _buildGTLogo(bool isDark) {
+  List<Widget> _buildBackgroundParticles(bool isDark) {
+    return List.generate(5, (index) {
+      final random = math.Random(index);
+      final size = 20.0 + (random.nextDouble() * 40);
+      final top = random.nextDouble() * 0.7;
+      final left = random.nextDouble();
+      
+      return Positioned(
+        top: MediaQuery.of(context).size.height * top,
+        left: MediaQuery.of(context).size.width * left,
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: isDark
+                ? const Color(0xFF6C63FF).withOpacity(0.05)
+                : const Color(0xFF6C63FF).withOpacity(0.03),
+          ),
+        ).animate(onPlay: (controller) => controller.repeat(reverse: true)).moveY(
+          begin: 0,
+          end: 30,
+          duration: Duration(seconds: 3 + (index * 500)),
+        ),
+      );
+    });
+  }
+
+  Widget _buildOrbitalRings(bool isDark) {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Inner circle
+        // Outer ring
         Container(
-          width: 150,
-          height: 150,
+          width: 280,
+          height: 280,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
-              color: isDark ? const Color(0xFFFFD700).withOpacity(0.3) : const Color(0xFFFFD700).withOpacity(0.5),
-              width: 2,
+              color: const Color(0xFF6C63FF).withOpacity(0.2),
+              width: 1,
             ),
           ),
         ),
-        // GT Text with Gold color
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'G',
-              style: TextStyle(
-                color: const Color(0xFFFFD700), // Gold
-                fontSize: 56,
-                fontWeight: FontWeight.bold,
-                height: 1,
-              ),
-            ),
-            Text(
-              'T',
-              style: TextStyle(
-                color: const Color(0xFFFFD700), // Gold
-                fontSize: 56,
-                fontWeight: FontWeight.bold,
-                height: 1,
-              ),
-            ),
-          ],
-        ),
-        // Cyan accent
-        Positioned(
-          top: 25,
-          right: 35,
-          child: Container(
-            width: 12,
-            height: 12,
-            decoration: const BoxDecoration(
-              color: Color(0xFF00E5FF), // Cyan
-              shape: BoxShape.circle,
+        // Middle ring
+        Container(
+          width: 220,
+          height: 220,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: const Color(0xFFFF6584).withOpacity(0.15),
+              width: 1,
             ),
           ),
         ),
-        Positioned(
-          bottom: 25,
-          left: 40,
-          child: Container(
-            width: 16,
-            height: 8,
-            decoration: BoxDecoration(
-              color: const Color(0xFF00E5FF), // Cyan
-              borderRadius: BorderRadius.circular(4),
+        // Inner ring
+        Container(
+          width: 160,
+          height: 160,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: const Color(0xFF00E5FF).withOpacity(0.1),
+              width: 1,
             ),
           ),
         ),
       ],
     );
   }
+
+  Widget _buildCustomLoadingIndicator(bool isDark) {
+    return SizedBox(
+      width: 60,
+      height: 60,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Rotating outer ring
+          AnimatedBuilder(
+            animation: _orbitController,
+            builder: (context, _) {
+              return Transform.rotate(
+                angle: _orbitController.value * 2 * math.pi,
+                child: CustomPaint(
+                  painter: LoadingRingPainter(
+                    color: const Color(0xFF6C63FF),
+                  ),
+                  size: const Size(60, 60),
+                ),
+              );
+            },
+          ),
+          // Pulsing center
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFFF6584),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF6584).withOpacity(0.6),
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+          ).animate(onPlay: (controller) => controller.repeat()).scale(
+            begin: const Offset(1, 1),
+            end: const Offset(1.5, 1.5),
+            duration: 1500.ms,
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+class LoadingRingPainter extends CustomPainter {
+  final Color color;
+
+  LoadingRingPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    final center = Offset(size.width / 2, size.height / 2);
+    const radius = 25.0;
+    const arcAngle = 0.8; // Partial arc
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      0,
+      arcAngle,
+      false,
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+}
+
