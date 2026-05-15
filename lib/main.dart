@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -9,36 +10,48 @@ import 'screens/splash_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // SystemChrome calls are not fully supported on web. Guard them so the
-  // app doesn't crash or hang when running in a browser.
-  if (!kIsWeb) {
-    // Set preferred orientations (portrait and landscape)
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
 
-    // Enable edge-to-edge
-    SystemChrome.setEnabledSystemUIMode(
-      SystemUiMode.edgeToEdge,
-      overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
-    );
+  // Catch uncaught errors during app startup and forward to console so web
+  // doesn't fail silently with a white screen.
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+  };
 
-    // Set system UI overlay style for dark theme
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.light,
-      ),
-    );
-  }
-  
-  runApp(const MyApp());
+  runZonedGuarded(() {
+    // SystemChrome calls are not fully supported on web. Guard them so the
+    // app doesn't crash or hang when running in a browser.
+    if (!kIsWeb) {
+      // Set preferred orientations (portrait and landscape)
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+
+      // Enable edge-to-edge
+      SystemChrome.setEnabledSystemUIMode(
+        SystemUiMode.edgeToEdge,
+        overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+      );
+
+      // Set system UI overlay style for dark theme
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.light,
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarIconBrightness: Brightness.light,
+        ),
+      );
+    }
+
+    runApp(const MyApp());
+  }, (error, stack) {
+    // Log any uncaught zone errors
+    debugPrint('Uncaught zone error: $error');
+    debugPrintStack(stackTrace: stack);
+  });
 }
 
 class MyApp extends StatelessWidget {

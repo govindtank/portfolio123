@@ -18,26 +18,116 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
+  <meta name="description" content="Govind Tank - Senior Mobile Application Developer Portfolio">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#6C63FF">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="portfolio">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Govind Tank Portfolio">
+  <meta name="format-detection" content="telephone=no">
 
-  <!-- Favicon -->
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://govindtank.github.io/portfolio/">
+  <meta property="og:title" content="Govind Tank - Senior Mobile Developer Portfolio">
+  <meta property="og:description" content="A modern portfolio application built with Flutter">
+  <meta property="og:image" content="https://govindtank.github.io/portfolio/assets/images/feature_graphic.svg">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://govindtank.github.io/portfolio/">
+  <meta property="twitter:title" content="Govind Tank - Senior Mobile Developer Portfolio">
+  <meta property="twitter:description" content="A modern portfolio application built with Flutter">
+  <meta property="twitter:image" content="https://govindtank.github.io/portfolio/assets/images/feature_graphic.svg">
+
   <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>portfolio</title>
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="manifest" href="manifest.json">
-  
+
   <!-- Preload Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Govind Tank - Portfolio</title>
+
+  <style>
+    /* Ensure the app takes full viewport on web */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background-color: #0d1117;
+    }
+
+    /* Smooth scrolling for web */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #484f58;
+    }
+
+    /* Prevent text selection during drag interactions */
+    body {
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Ensure Flutter content fills the viewport */
+    #root {
+      width: 100%;
+      min-height: 100vh;
+    }
+  </style>
 </head>
 <body>
+  <noscript>
+    <div style="
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Inter', sans-serif;
+      text-align: center;
+      padding: 20px;
+    ">
+      <div>
+        <h1 style="font-size: 2rem; margin-bottom: 16px;">Govind Tank Portfolio</h1>
+        <p style="font-size: 1.1rem; opacity: 0.7;">This portfolio requires JavaScript to run. Please enable JavaScript in your browser settings.</p>
+      </div>
+    </div>
+  </noscript>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>

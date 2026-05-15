@@ -185,7 +185,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 600;
+    final bool isMobile = screenWidth < 600;
+    final bool isTablet = screenWidth >= 600 && screenWidth < 1200;
+    final bool isDesktop = screenWidth >= 1200;
 
     return AnimatedBackground(
       child: Scaffold(
@@ -230,7 +232,7 @@ class HomePage extends StatelessWidget {
         body: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(
-              horizontal: isMobile ? 16 : 40,
+              horizontal: isMobile ? 16 : (isTablet ? 24 : 40),
               vertical: 20,
             ),
             child: Center(

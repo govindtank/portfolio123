@@ -1,12 +1,12 @@
 {
-    "name": "portfolio",
-    "short_name": "portfolio",
+    "name": "Govind Tank Portfolio",
+    "short_name": "Govind Tank",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#0d1117",
+    "theme_color": "#6C63FF",
+    "description": "Senior Mobile Application Developer Portfolio",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
@@ -31,5 +31,6 @@
             "type": "image/png",
             "purpose": "maskable"
         }
-    ]
+    ],
+    "categories": ["portfolio", "developer", "resume"]
 }

@@ -1,4 +1,4 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'visitor_storage_io.dart' if (dart.library.html) 'visitor_storage_web.dart' as storage;
 
 /// Service for tracking visitor count using local storage
 /// This provides a simple visitor counter without any third-party dependencies
@@ -11,8 +11,8 @@ class VisitorCounterService {
   
   /// Get the current visitor count
   Future<int> getVisitorCount() async {
-    final prefs = await SharedPreferences.getInstance();
-    _cachedCount = prefs.getInt(_visitorCountKey) ?? 0;
+    final value = await storage.getInt(_visitorCountKey);
+    _cachedCount = value ?? 0;
     return _cachedCount!;
   }
   
@@ -20,41 +20,37 @@ class VisitorCounterService {
   /// This should be called when a user visits the portfolio
   /// Uses a simple logic: increment once per day per device
   Future<int> incrementVisitorCount() async {
-    final prefs = await SharedPreferences.getInstance();
-    
     // Get current date string (YYYY-MM-DD)
     final today = DateTime.now().toIso8601String().split('T')[0];
-    final lastVisit = prefs.getString(_lastVisitKey);
-    
+    final lastVisit = await storage.getString(_lastVisitKey);
+
     // Get current count
-    int count = prefs.getInt(_visitorCountKey) ?? 0;
-    
+    int count = (await storage.getInt(_visitorCountKey)) ?? 0;
+
     // Only increment if it's a new day or first visit
     if (lastVisit == null || lastVisit != today) {
       count++;
-      await prefs.setInt(_visitorCountKey, count);
-      await prefs.setString(_lastVisitKey, today);
+      await storage.setInt(_visitorCountKey, count);
+      await storage.setString(_lastVisitKey, today);
     }
-    
+
     _cachedCount = count;
     return count;
   }
   
   /// Force increment (for testing or manual counter management)
   Future<int> forceIncrement() async {
-    final prefs = await SharedPreferences.getInstance();
-    int count = (prefs.getInt(_visitorCountKey) ?? 0) + 1;
-    await prefs.setInt(_visitorCountKey, count);
+    int count = ((await storage.getInt(_visitorCountKey)) ?? 0) + 1;
+    await storage.setInt(_visitorCountKey, count);
     _cachedCount = count;
     return count;
   }
   
   /// Reset the visitor count
   Future<void> resetCount() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_visitorCountKey);
-    await prefs.remove(_lastVisitKey);
-    await prefs.remove(_visitorIdKey);
+    await storage.remove(_visitorCountKey);
+    await storage.remove(_lastVisitKey);
+    await storage.remove(_visitorIdKey);
     _cachedCount = 0;
   }
   

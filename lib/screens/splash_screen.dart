@@ -33,9 +33,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   Future<void> _initializeAndNavigate() async {
-    _visitorCounterService.incrementVisitorCount().catchError((_) {
-      debugPrint('Failed to increment visitor count');
-    });
+    try {
+      await _visitorCounterService.incrementVisitorCount();
+    } catch (e) {
+      // Don't block navigation on analytics/local-storage failures
+      debugPrint('Failed to increment visitor count: $e');
+    }
     await Future.delayed(const Duration(milliseconds: 3000));
     if (mounted) {
       Navigator.of(context).pushReplacement(
@@ -50,8 +53,46 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final screenSize = MediaQuery.of(context).size;
-    final isMobile = screenSize.width < 600;
-    
+    final screenWidth = screenSize.width;
+    final bool isMobile = screenWidth < 600;
+    final bool isTablet = screenWidth >= 600 && screenWidth < 1200;
+    final bool isDesktop = screenWidth >= 1200;
+
+    // Responsive values based on screen width
+    double profileSize, nameFontSize, roleFontSize, taglineFontSize;
+    double spacingSmall, spacingMedium, spacingLarge;
+    double loadingIndicatorSize;
+
+    if (isMobile) {
+      profileSize = 280.0;
+      nameFontSize = 28.0;
+      roleFontSize = 16.0;
+      taglineFontSize = 14.0;
+      spacingSmall = 20.0;
+      spacingMedium = 30.0;
+      spacingLarge = 40.0;
+      loadingIndicatorSize = 60.0;
+    } else if (isTablet) {
+      profileSize = 320.0;
+      nameFontSize = 34.0;
+      roleFontSize = 18.0;
+      taglineFontSize = 15.0;
+      spacingSmall = 30.0;
+      spacingMedium = 40.0;
+      spacingLarge = 50.0;
+      loadingIndicatorSize = 70.0;
+    } else {
+      // Desktop
+      profileSize = 360.0;
+      nameFontSize = 40.0;
+      roleFontSize = 20.0;
+      taglineFontSize = 16.0;
+      spacingSmall = 40.0;
+      spacingMedium = 50.0;
+      spacingLarge = 60.0;
+      loadingIndicatorSize = 80.0;
+    }
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -62,7 +103,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 ? [
                     const Color(0xFF121212),
                     const Color(0xFF1A1A2E),
-                    const Color(0xFF0F3460),
+                    const Color(0xFF0F172A),
                   ]
                 : [
                     const Color(0xFFF8F9FF),
@@ -86,17 +127,17 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: isMobile ? 20 : 40),
+                      SizedBox(height: spacingSmall),
                       
                       // Profile Picture with Orbital Animation
                       SizedBox(
-                        height: isMobile ? 280 : 320,
-                        width: isMobile ? 280 : 320,
+                        height: profileSize,
+                        width: profileSize,
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
                             // Orbital rings
-                            _buildOrbitalRings(isDark),
+                            _buildOrbitalRings(isDark, profileSize),
                             
                             // Rotating profile picture
                             AnimatedBuilder(
@@ -108,8 +149,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                                 );
                               },
                               child: Container(
-                                width: isMobile ? 180 : 220,
-                                height: isMobile ? 180 : 220,
+                                width: profileSize * 0.75, // 75% of profileSize for the image
+                                height: profileSize * 0.75,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   image: const DecorationImage(
@@ -146,7 +187,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         ),
                       ),
                       
-                      SizedBox(height: isMobile ? 30 : 50),
+                      SizedBox(height: spacingMedium),
                       
                       // Name
                       Text(
@@ -154,7 +195,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: isDark ? Colors.white : const Color(0xFF121212),
-                          fontSize: isMobile ? 28 : 40,
+                          fontSize: nameFontSize,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1,
                         ),
@@ -179,7 +220,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: isMobile ? 16 : 20,
+                            fontSize: roleFontSize,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.5,
                           ),
@@ -199,7 +240,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           color: isDark
                               ? Colors.white70
                               : const Color(0xFF666666),
-                          fontSize: isMobile ? 14 : 16,
+                          fontSize: taglineFontSize,
                           fontWeight: FontWeight.w400,
                           letterSpacing: 2,
                         ),
@@ -208,14 +249,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                           .fadeIn(delay: 1000.ms, duration: 600.ms)
                           .slideY(begin: 0.3, end: 0, delay: 1000.ms, duration: 600.ms),
                       
-                      SizedBox(height: isMobile ? 40 : 60),
+                      SizedBox(height: spacingLarge),
                       
                       // Animated loading indicator
-                      _buildCustomLoadingIndicator(isDark)
+                      _buildCustomLoadingIndicator(isDark, loadingIndicatorSize)
                           .animate()
                           .fadeIn(delay: 1200.ms, duration: 400.ms),
                       
-                      SizedBox(height: isMobile ? 40 : 60),
+                      SizedBox(height: spacingLarge),
                     ],
                   ),
                 ),
@@ -249,20 +290,21 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         ).animate(onPlay: (controller) => controller.repeat(reverse: true)).moveY(
           begin: 0,
           end: 30,
-          duration: Duration(seconds: 3 + (index * 500)),
+          // Stagger durations a bit (ms), avoid huge second values that look like a bug
+          duration: Duration(milliseconds: 3000 + (index * 500)),
         ),
       );
     });
   }
 
-  Widget _buildOrbitalRings(bool isDark) {
+  Widget _buildOrbitalRings(bool isDark, double profileSize) {
     return Stack(
       alignment: Alignment.center,
       children: [
         // Outer ring
         Container(
-          width: 280,
-          height: 280,
+          width: profileSize,
+          height: profileSize,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -273,8 +315,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         ),
         // Middle ring
         Container(
-          width: 220,
-          height: 220,
+          width: profileSize * 0.75,
+          height: profileSize * 0.75,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -285,8 +327,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         ),
         // Inner ring
         Container(
-          width: 160,
-          height: 160,
+          width: profileSize * 0.5,
+          height: profileSize * 0.5,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
@@ -299,10 +341,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     );
   }
 
-  Widget _buildCustomLoadingIndicator(bool isDark) {
+  Widget _buildCustomLoadingIndicator(bool isDark, double size) {
     return SizedBox(
-      width: 60,
-      height: 60,
+      width: size,
+      height: size,
       child: Stack(
         alignment: Alignment.center,
         children: [
@@ -316,7 +358,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   painter: LoadingRingPainter(
                     color: const Color(0xFF6C63FF),
                   ),
-                  size: const Size(60, 60),
+                  size: Size(size, size),
                 ),
               );
             },
@@ -375,4 +417,3 @@ class LoadingRingPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
-

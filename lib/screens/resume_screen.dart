@@ -49,6 +49,28 @@ class _ResumeScreenState extends State<ResumeScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDarkMode;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final bool isMobile = screenWidth < 600;
+    final bool isTablet = screenWidth >= 600 && screenWidth < 1200;
+    final bool isDesktop = screenWidth >= 1200;
+
+    double bodyPadding, sectionSpacing, headingFontSize, textFontSize;
+    if (isMobile) {
+      bodyPadding = 16.0;
+      sectionSpacing = 20.0;
+      headingFontSize = 20.0;
+      textFontSize = 14.0;
+    } else if (isTablet) {
+      bodyPadding = 24.0;
+      sectionSpacing = 28.0;
+      headingFontSize = 22.0;
+      textFontSize = 15.0;
+    } else {
+      bodyPadding = 40.0;
+      sectionSpacing = 30.0;
+      headingFontSize = 24.0;
+      textFontSize = 16.0;
+    }
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -110,33 +132,38 @@ class _ResumeScreenState extends State<ResumeScreen> {
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context),
-              const SizedBox(height: 30),
-              _buildDownloadButton(context),
-              const SizedBox(height: 30),
-              _buildSummary(context),
-              const SizedBox(height: 30),
-              _buildSkills(context),
-              const SizedBox(height: 30),
-              _buildExperience(context),
-              const SizedBox(height: 30),
-              _buildEducation(context),
-              const SizedBox(height: 30),
-              _buildContact(context),
-              const SizedBox(height: 100),
-            ],
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: bodyPadding),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 1200),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(context, isMobile),
+                  SizedBox(height: sectionSpacing),
+                  _buildDownloadButton(context),
+                  SizedBox(height: sectionSpacing),
+                  _buildSummary(context, headingFontSize, textFontSize),
+                  SizedBox(height: sectionSpacing),
+                  _buildSkills(context, headingFontSize, textFontSize),
+                  SizedBox(height: sectionSpacing),
+                  _buildExperience(context, headingFontSize, textFontSize),
+                  SizedBox(height: sectionSpacing),
+                  _buildEducation(context, headingFontSize, textFontSize),
+                  SizedBox(height: sectionSpacing),
+                  _buildContact(context, headingFontSize, textFontSize),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildHeader(BuildContext context, bool isMobile) {
     return GlassCard(
       child: Column(
         children: [
@@ -263,7 +290,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
     ).animate().fadeIn(delay: 300.ms).scale(begin: const Offset(0.9, 0.9));
   }
 
-  Widget _buildSummary(BuildContext context) {
+  Widget _buildSummary(BuildContext context, double headingFontSize, double textFontSize) {
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,10 +306,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
                 child: const Icon(Icons.person, color: Color(0xFF6C63FF)),
               ),
               const SizedBox(width: 12),
-              const Text(
+              Text(
                 'Professional Summary',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -293,7 +320,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
           Text(
             'High-performance Senior Mobile Application Developer with 9+ years of experience architecting scalable Android (Kotlin/Java) and Cross-Platform (Flutter) solutions. Proven track record of delivering applications serving 100,000+ active users with 99.9% crash-free stability. Specialized in Clean Architecture, MVVM/Bloc patterns, and modern UI toolkits like Jetpack Compose. Forward-thinking advocate for AI-augmented development, leveraging coding agents like Cursor and Windsurf to accelerate delivery cycles and enhance code quality.',
             style: TextStyle(
-              fontSize: 15,
+              fontSize: textFontSize,
               color: Colors.white70,
               height: 1.6,
             ),
@@ -303,7 +330,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
     ).animate().fadeIn().slideX(begin: -0.1);
   }
 
-  Widget _buildSkills(BuildContext context) {
+  Widget _buildSkills(BuildContext context, double headingFontSize, double textFontSize) {
     final skills = [
       {
         'category': 'Languages',
@@ -350,10 +377,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
                 child: const Icon(Icons.code, color: Color(0xFF6C63FF)),
               ),
               const SizedBox(width: 12),
-              const Text(
+              Text(
                 'Technical Skills',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -408,7 +435,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
     );
   }
 
-  Widget _buildExperience(BuildContext context) {
+  Widget _buildExperience(BuildContext context, double headingFontSize, double textFontSize) {
     final experiences = [
       {
         'role': 'Senior Software Developer L2',
@@ -480,10 +507,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
               child: const Icon(Icons.work, color: Color(0xFF6C63FF)),
             ),
             const SizedBox(width: 12),
-            const Text(
+            Text(
               'Professional Experience',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: headingFontSize,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -583,7 +610,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
     );
   }
 
-  Widget _buildEducation(BuildContext context) {
+  Widget _buildEducation(BuildContext context, double headingFontSize, double textFontSize) {
     final education = [
       {
         'degree': 'Master of Computer Applications (M.C.A.)',
@@ -613,10 +640,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
               child: const Icon(Icons.school, color: Color(0xFF6C63FF)),
             ),
             const SizedBox(width: 12),
-            const Text(
+            Text(
               'Education',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: headingFontSize,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
@@ -686,7 +713,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
     );
   }
 
-  Widget _buildContact(BuildContext context) {
+  Widget _buildContact(BuildContext context, double headingFontSize, double textFontSize) {
     return GlassCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -702,10 +729,10 @@ class _ResumeScreenState extends State<ResumeScreen> {
                 child: const Icon(Icons.contact_mail, color: Color(0xFF6C63FF)),
               ),
               const SizedBox(width: 12),
-              const Text(
+              Text(
                 'Connect',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: headingFontSize,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),

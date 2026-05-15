@@ -32,20 +32,17 @@ jobs:
 
       - name: Get dependencies
         run: flutter pub get
-        working-directory: portfolioApp
 
-      - name: Build Flutter Web
-        run: flutter build web --release --base-href "/portfolioApp/"
-        working-directory: portfolioApp
+      - name: Build Flutter Web (CanvasKit)
+        run: flutter build web --release --base-href "/portfolio/" --web-renderer canvaskit
 
       - name: Create .nojekyll file
         run: touch build/web/.nojekyll
-        working-directory: portfolioApp
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'portfolio/build/web/'
+          path: 'build/web/'
 
       - name: Deploy to GitHub Pages
         id: deployment
